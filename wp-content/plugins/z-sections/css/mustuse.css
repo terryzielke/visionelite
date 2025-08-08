@@ -1,0 +1,8 @@
+html body.page-template-z-sections-template #wpadminbar #wp-admin-bar-et-use-visual-builder{ display: none !important; }
+html body .z-content iframe {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    display: block;
+    max-width: 100%;
+}

@@ -1,0 +1,109 @@
+#subscription-levels-chart{
+    display: flex;
+    flex-direction: row;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    overflow: hidden;
+}
+#subscription-levels-chart ul{
+    flex: 1;
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+#subscription-levels-chart ul li{
+    margin: 0 !important;
+    padding: 10px 20px !important;
+    text-align: center;
+    font-weight: 600;
+    height: 45px;
+    line-height: 45px;
+}
+#subscription-levels-chart ul li .mobile-only,
+#subscription-levels-chart ul li .fa-circle-xmark{
+    display: none;
+}
+#subscription-levels-chart ul li:not(:nth-last-child(1)){
+    border-bottom: 1px solid hsla(0, 0%, 100%, 0.3);
+}
+#subscription-levels-chart ul li:nth-child(1){
+    height: 65px;
+    line-height: 65px;
+    padding-top: 20px !important;
+}
+#subscription-levels-chart ul:nth-child(1){
+    flex: 3;
+    background-color: #e9ebf4;
+}
+#subscription-levels-chart ul:nth-child(1) li{
+    text-align: left;
+    font-weight: 400;
+    border-color: #fff;
+}
+#subscription-levels-chart ul:nth-child(1) li:nth-child(1){
+    color: transparent !important;
+}
+#subscription-levels-chart ul:nth-child(2) li{
+    border-color: #e9ebf4;
+}
+#subscription-levels-chart ul:nth-child(3){
+    background-color: #375FBC;
+    color: #fff;
+}
+#subscription-levels-chart ul:nth-child(4){
+    background-color: #264898;
+    color: #fff;
+}
+#subscription-levels-chart ul:nth-child(5){
+    background-color: #122960;
+    color: #fff;
+}
+#subscription-levels-chart ul:nth-child(6){
+    background-color: #09142e;
+    color: #fff;
+}
+
+@media(max-width: 992px){
+    #subscription-levels-chart{
+        flex-direction: column;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+    #subscription-levels-chart ul{
+        width: 100%;
+        margin-bottom: 0px;
+        padding-bottom: 10px !important;
+    }
+    #subscription-levels-chart ul li{
+        height: auto;
+        line-height: normal;
+        text-align: left !important;
+        padding: 0 20px !important;
+        border-bottom: none !important;
+        font-weight: 400 !important;
+        font-size: .8em !important;
+    }
+    #subscription-levels-chart ul li span{
+        display: block;
+        padding: 10px 0;
+    }
+    #subscription-levels-chart ul li .mobile-only{
+        display: inline-block;
+    }
+    #subscription-levels-chart ul li .fa-circle-check,
+    #subscription-levels-chart ul li .desktop-only{
+        display: none;
+    }
+    #subscription-levels-chart ul:nth-child(1){
+        display: none;
+    }
+    #subscription-levels-chart ul li:nth-child(1){
+        font-size: 1.2em !important;
+        font-weight: 700 !important;
+    }
+    #subscription-levels-chart ul:nth-child(2){
+        background-color: #e9ebf4;
+    }
+}

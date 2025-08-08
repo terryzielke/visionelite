@@ -1,0 +1,57 @@
+#filters{
+    margin-top: 20px;
+    margin-left: -10px;
+    margin-right: -10px;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border-top: 1px solid hsla(0,0%,100%,.1);
+    display: none;
+    &.show{
+        display: flex;
+    }
+    .filter{
+        flex: 1;
+        min-width: 160px;
+        padding-left: 10px;
+        padding-right: 10px;
+        label{
+            display: block;
+            color: $white;
+            font-family: $rajdhani;
+            font-size: $font-size;
+            //margin-top: 20px;
+            margin-bottom: 0;
+        }
+        select{
+            position: relative;
+            -webkit-appearance: none;
+            display: block;
+            width: 100%;
+            max-width: 200px;
+            padding: 5px 10px;
+            padding-right: 30px;
+            font-family: $text;
+            font-size: clamp(12px,.6vw,18px);
+            font-weight: 600;
+            color: $grey;
+            background-color: $light;
+            background-image: url(../assets/img/UI/down-carrot-grey.svg);
+            background-repeat: no-repeat;
+            background-size: 10px;
+            background-position: center right 10px;
+            border: 2px solid $light;
+            outline: none;
+        }
+    }
+    @media(max-width: $md){
+        
+        .filter{
+            margin-top: 10px;
+            margin-bottom: 10px;
+            margin-left: 0;
+            margin-right: 0;
+        }
+    }
+}

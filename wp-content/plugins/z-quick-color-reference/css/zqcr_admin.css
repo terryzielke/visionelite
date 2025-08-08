@@ -1,0 +1,59 @@
+#wp-admin-bar-zqcr_dropdown-default{
+	padding: 0 !important;
+}
+#wp-admin-bar-zqcr_dropdown-default li{
+	background: hsla(0,0%,0%,0);
+	border-bottom: 1px solid hsla(0,0%,0%,.5);
+	transition: background .2s linear;
+}#wp-admin-bar-zqcr_dropdown-default li:hover{
+	background: hsla(0,0%,0%,.1);
+}
+#wp-admin-bar-zqcr_dropdown-default li b{
+	position: relative;
+	display: block;
+	cursor: pointer !important;
+}
+#wp-admin-bar-zqcr_dropdown-default li b span.colorCode{
+	position: absolute;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	width: 25px;
+	height: 25px;
+}
+#wp-admin-bar-zqcr_dropdown-default li b span.colorName{
+	position: relative;
+	z-index: 2;
+	padding-left: 30px;
+	line-height: 25px;
+	text-shadow: 0 0 3px hsla(0,0%,0%,.5);
+}
+
+.zqcr-settings-wrapper div.color{
+	position: relative;
+	padding: 80px 20px 20px;
+}
+.zqcr-settings-wrapper div.color input.color_name{
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	padding: 10px 20px;
+	width: calc(100% - 40px);
+	height: 40px;
+	line-height: 20px;
+	-webkit-appearance: none;
+	background: hsla(0,0%,100%,.3);
+	border: none !important;
+	border-bottom: 1px solid hsla(0,0%,0%,.2) !important;
+	border-radius: 0;
+	box-shadow: none !important;
+	color: hsla(0,0%,0%,1);
+	font-size: 20px;
+	font-weight: 600;
+}
+.zqcr-settings-wrapper div.color .wp-picker-clear{
+	height: 30px !important;
+	line-height: 30px !important;
+	margin-left: 5px;
+	border-radius: 5px !important;
+}

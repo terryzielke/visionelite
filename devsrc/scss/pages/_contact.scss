@@ -1,0 +1,128 @@
+section#contact-information{
+    margin-bottom: 100px;
+    .split{
+        .col{
+            h1{
+                max-width: 600px;
+                margin: 0 auto 50px;
+                padding: 0 0 50px;
+                color: $orange;
+                border-bottom: 1px solid hsla(0,0%, 0%, 0.1);
+            }
+            .offices{
+                max-width: 600px;
+                margin: 0 auto;
+                .office{
+                    margin-bottom: 40px;
+                    h3{
+                        margin-top: 0;
+                        color: $blue;
+                    }
+                    p{
+                        position: relative;
+                        padding-left: 25px;
+                        i{
+                            position: absolute;
+                            top: 3px;
+                            left: 0;
+                            color: $orange;
+                        }
+                    }
+                }
+            }
+            .form{
+                background-color: $blue;
+                background-image: url(../assets/img/dark-array-of-dots.png);
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-position: center;
+                min-height: calc(100dvh - 140px);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                border-bottom-left-radius: 100px;
+                form.forminator-ui{
+                    max-width: 600px;
+                    margin: 0 auto;
+                    label{
+                        color: $white;
+                        text-transform: uppercase;
+                    }
+                    button.forminator-button{
+                        background-color: $white !important;
+                        color: $blue !important;
+                        &:hover{
+                            background-color: $orange !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    @media(max-width: $md){
+        margin-bottom: 50px;
+        .split{
+            .col{
+                .form{
+                    min-height: 0;
+                    padding: 50px 40px;
+                    border-bottom-left-radius: 0;
+                }
+            }
+        }
+    }
+}
+
+section#our-team-section{
+    .container{
+        h2{
+            color: $blue;
+        }
+        .team-members{
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 40px;
+            margin: 50px 0;
+            .team-member{
+                background-color: $light;
+                padding: 40px;
+                border-radius: 10px;
+                border-top-left-radius: 50px;
+                border-bottom-right-radius: 50px;
+                h3{
+                    color: $blue;
+                    font-weight: 400;
+                }
+                h4{
+                    color: $orange;
+                }
+                p{
+                    i{
+                        position: relative;
+                        top: 1px;
+                        color: $orange;
+                        margin-right: 5px;
+                    }
+                    a{
+                        font-weight: 600;
+                    }
+                }
+            }
+        }
+    }
+    @media(max-width: $lg){
+        .container{
+            .team-members{
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    }
+    @media(max-width: $md){
+        .container{
+            .team-members{
+                grid-template-columns: 1fr;
+            }
+        }
+    }
+}

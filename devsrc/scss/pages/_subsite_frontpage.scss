@@ -1,0 +1,344 @@
+section#subsite-top-section{
+    position: relative;
+    width: 100%;
+    background-color: $darkblue;
+    background: -webkit-linear-gradient(90deg,rgba(22, 29, 71, 1) 0%, rgba(18, 41, 96, 1) 30%, rgba(18, 41, 96, 1) 70%, rgba(22, 29, 71, 1) 100%);
+    background: -moz-linear-gradient(90deg,rgba(22, 29, 71, 1) 0%, rgba(18, 41, 96, 1) 30%, rgba(18, 41, 96, 1) 70%, rgba(22, 29, 71, 1) 100%);
+    background: linear-gradient(90deg,rgba(22, 29, 71, 1) 0%, rgba(18, 41, 96, 1) 30%, rgba(18, 41, 96, 1) 70%, rgba(22, 29, 71, 1) 100%);
+    border-bottom-left-radius: 100px;
+    border-bottom-right-radius: 100px;
+    overflow: hidden;
+    figure.sport-image{
+        position: absolute;
+        z-index: 0;
+        display: block;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        img{
+            position: absolute;
+            top: 0;
+            left: 40%;
+            height: 100%;
+            aspect-ratio: 3/2;
+            object-fit: cover;
+        }
+    }
+    .overlay{
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        padding: 200px 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        h1{
+            color: $orange;
+            text-shadow: 0 0 10px hsla(0, 0%, 0%, 0.2);
+        }
+    }
+    @media(max-width: $max-width) {
+        border-bottom-left-radius: 50px;
+        border-bottom-right-radius: 50px;
+    }
+    @media(max-width: $md){
+        figure.sport-image{
+            background-size: cover;
+            img{
+                left: 25%;
+            }
+        }
+        .overlay{
+            padding: 100px 0;
+        }
+    }
+}
+
+
+section#subsite-programs-section{
+    position: relative;
+    width: 100%;
+    padding: 50px 0;
+    .content{
+        h3{
+            color: $blue;
+        }
+    }
+    .programs.row{
+        margin-top: 50px;
+        .col{
+            a.program-item{
+                position: relative;
+                display: block;
+                width: 100%;
+                background-color: $light;
+                border-radius: 50px;
+                overflow: hidden;
+                figure{
+                    position: relative;
+                    width: 100%;
+                    aspect-ratio: 1/1;
+                    overflow: hidden;
+                    img{
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        transform: scale(1);
+                        transition: .3s all ease-out;
+                    }
+                }
+                .program-info{
+                    position: relative;
+                    padding: 20px 40px 30px;
+                    h4{
+                        color: $blue;
+                    }
+                    p{
+                        color: $dark;
+                    }
+                }
+            }
+        }
+    }
+    @media(max-width: $max-width) {
+        .programs.row{
+            .col{
+                a.program-item{
+                    margin-bottom: 40px;
+                }
+            }
+        }
+    }
+    @media(max-width: $md) {
+        .programs.row{
+            .col{
+                a.program-item{
+                    height: auto !important;
+                }
+            }
+        }
+    }
+}
+
+section#subsite-events-section{
+    margin-top: 50px;
+    margin-bottom: 50px;
+    .container{
+        #event-slider{
+            .slick-arrow{
+                position: absolute;
+                top: 50%;
+                z-index: 1;
+                width: 50px;
+                height: 50px;
+                background-color: transparent;
+                background-size: 20px;
+                background-position: center;
+                background-repeat: no-repeat;
+                border: none;
+                border-radius: 50%;
+                transform: translateY(-50%);
+                font-size: 0;
+                color: transparent;
+                cursor: pointer;
+                &:hover{
+                    background-size: 30px;
+                }
+                &.slick-prev{
+                    left: -50px;
+                    background-image: url('../assets/img/UI/left-carrot-blue.svg');
+                }
+                &.slick-next{
+                    right: -50px;
+                    background-image: url('../assets/img/UI/right-carrot-blue.svg');
+                }
+            }
+            .slick-dots{
+                position: relative;
+                margin-top: 0 !important;
+                text-align: center;
+                li{
+                    display: inline-block;
+                    padding: 0  5px;
+                    button{
+                        display: block;
+                        width: 12px !important;
+                        height: 12px !important;
+                        border-radius: 1000px;
+                        border: none;
+                        background-color: $light;
+                        font-size: 0px !important;
+                        color: transparent !important;
+                    }
+                    &.slick-active{
+                        button{
+                            background-color: $blue;
+                        }
+                    }
+                }
+            }
+            .event-item{
+                background: $light;
+                border-top-left-radius: 50px;
+                border-top-right-radius: 50px;
+                border-bottom-left-radius: 10px;
+                border-bottom-right-radius: 10px;
+                overflow: hidden;
+                opacity: 0;
+                transition: .2s all linear;
+                &.slick-active{
+                    opacity: 1;
+                }
+                .event-banner{
+                    position: relative;
+                    width: 100%;
+                    background-color: $blue;
+                    padding: 0px 20px;
+                    border-top-left-radius: 50px;
+                    border-top-right-radius: 50px;
+                    overflow: hidden;
+                    figure{
+                        position: absolute;
+                        z-index: 0;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background-size: cover;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        border-top-left-radius: 50px;
+                        border-top-right-radius: 50px;
+                        overflow: hidden;
+                        opacity: 0.5;
+                    }
+                    .content{
+                        position: relative;
+                        z-index: 1;
+                        .display-text{
+                            padding: 50px 0;
+                            h2{
+                                color: $orange;
+                            }
+                            p{
+                                color: $white;
+                                margin-bottom: 20px;
+                            }
+                        }
+                        .caption-text{
+                            padding: 10px 0;
+                            display: flex;
+                            flex-direction: row;
+                            justify-content: space-between;
+                            color: $white;
+                            border-top: 1px solid hsla(0, 0%, 100%, 0.2);
+                            .date-time{
+                                text-align: right;
+                            }
+                        }
+                    }
+                }
+                .event-description{
+                    padding: 40px 40px 50px;
+                    border-bottom-left-radius: 10px;
+                    border-bottom-right-radius: 10px;
+                    overflow: hidden;
+                }
+            }
+        }
+    }
+    @media(max-width: $md){
+        margin-top: 0;
+    }
+}
+
+section#subsite-coaches-section{
+    margin-bottom: 0;
+    background-image: url('../assets/img/light-array-of-dots.png');
+    background-size: 50vw;
+    background-position: bottom -25vw center;
+    background-repeat: no-repeat;
+    .container{
+        .content{
+            h3{
+                color: $blue;
+            }
+            .coachs{
+                margin-top: 20px;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: space-around;
+                .col{
+                    width: 100%;
+                    max-width: 300px;
+                    margin-bottom: 40px;
+                    a.coach-item{
+                        position: relative;
+                        display: block;
+                        width: 100%;
+                        border-radius: 50px;
+                        overflow: hidden;
+                        figure{
+                            position: relative;
+                            width: 100%;
+                            aspect-ratio: 1/1;
+                            overflow: hidden;
+                            border-radius: 50px;
+                            border-bottom-left-radius: 10px;
+                            overflow: hidden;
+                            img{
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                                transform: scale(1);
+                                transition: .3s all ease-out;
+                                border-radius: 50px;
+                                border-bottom-left-radius: 10px;
+                                box-shadow: 0 10px 20px hsla(0, 0%, 0%, 0.1);
+                            }
+                        }
+                        .coach-info{
+                            position: relative;
+                            padding: 10px 0 20px;
+                            text-align: center;
+                            .dark{
+                                color: $blue;
+                            }
+                            .orange{
+                                color: $orange;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    @media(max-width: $md){
+        .container{
+            .content{
+                .coachs{
+                    flex-direction: column;
+                    align-items: center;
+                    .col{
+                        width: 100%;
+                        max-width: 1000px;
+                        margin: 40px 0;
+                    }
+                }
+            }
+        }
+    }
+}

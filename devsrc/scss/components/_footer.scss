@@ -1,0 +1,234 @@
+#footer{
+	position: relative;
+	z-index: 10;
+	background: $white;
+	border-top: 1px solid hsla(0,0%,100%,.1);
+	box-shadow: none;
+	padding: 0;
+	background-color: $blue;
+	text-align: center;
+	.footer-crosslink{
+		width: 100%;
+		margin: 0 !important;
+		.col{
+			padding: 0;
+			a,
+			span{
+				display: block;
+				color: $white;
+				padding: 40px;
+				img{
+					width:80%;
+					max-width: 200px;
+					margin: 0 0 10px;
+				}
+				h3{
+					margin: 0 0 10px;
+					padding: 0;
+				}
+				p{
+					margin: 0;
+					padding: 0;
+				}
+			}
+			a{
+				background: $darkblue;
+				transition: .2s all linear;
+				cursor: pointer;
+				&:hover{
+					background: lighten($darkblue,5%);
+					color: $white;
+				}
+			}
+			@media(min-width:$md){
+				&:first-child{
+					a,span{
+						border-bottom-right-radius: 50px;
+					}
+				}
+				&:last-child{
+					a,span{
+						border-bottom-left-radius: 50px;
+					}
+				}
+			}
+		}
+		@media(max-width:$md){
+			text-align: left;
+		}
+	}
+	.footer-content{
+		max-width: $page-width;
+		margin: auto;
+		text-align: left;
+		*{
+			color: $white;
+		}
+		.col{
+			position: relative;
+			padding: 40px 20px 0;
+		}
+		.footer-logo{
+			#footer-logo{
+				position: relative;
+				z-index: 1;
+				img{
+					width: 100%;
+					max-height: 60px !important;
+				}
+			}
+		}
+		.footer-menu{
+			.menu-footer-container{
+				display: block;
+				width: 100%;
+				max-width: $page-width;
+				ul#footer-menu{
+					list-style: none !important;
+					display: flex;
+					flex-direction: row;
+					flex-wrap: wrap;
+					justify-content: space-between;
+					width: 100%;
+					margin-top: 0 !important;
+					li{
+						//width: 20%;
+						padding-top: .5em;
+						padding-bottom: 40px;
+						padding-left: 0 !important;
+						a{
+							font-family: $rajdhani;
+							text-transform: uppercase;
+							font-size: $font-size;
+							font-weight: 600;
+							padding: 0;
+						}
+					}
+					ul.sub-menu{
+						list-style: none !important;
+						padding-top: 10px;
+						padding-left: 0 !important;
+						li{
+							width: 100%;
+							margin: 0 !important;
+							padding: 0 !important;
+							a{
+								height: auto;
+								margin: 7px 0;
+								font-family: $text;
+								font-weight: 600;
+								font-size: calc($font-size - 4px);
+								line-height: 1em;
+								text-transform: none;
+								transition: .2s all linear;
+								&:hover{
+									color: $orange;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		@media(max-width:$lg){
+			.footer-menu{
+				.menu-footer-container{
+					ul#footer-menu{
+						li{
+							a{
+								font-size: $font-size;
+							}
+							.sub-menu{
+								li{
+									a{
+										margin: 4px 0 !important;
+										font-size: calc($font-size - 4px) !important;
+										font-weight: 500 !important;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		@media(max-width:$md){
+			.footer-menu{
+				.menu-footer-container{
+					ul#footer-menu{
+						li{
+							display: block;
+							width: 48%;
+						}
+					}
+				}
+			}
+		}
+		@media(max-width:$sm){
+			.footer-menu{
+				.menu-footer-container{
+					ul#footer-menu{
+						li{
+							width: 100%;
+						}
+					}
+				}
+			}
+		}
+	}
+	.legal{
+		padding: 2vh 20px;
+		background-color: $white;
+		.row{
+			#copywrite{
+				color: $grey;
+				font-weight: 200;
+				font-size: 14px;
+				line-height: 20px;
+				text-align: left;
+				a{
+					text-decoration: none;
+					color: $grey;
+					&:hover{
+						color: $grey;
+					}
+				}
+				b{
+					font-weight: 100;
+					margin: 0 1em;
+					opacity: .5;
+				}
+			}
+			#webdeveloper{
+				text-align: right;
+				svg{
+					position: relative;
+					top: -.1em;
+					width: auto;
+					height: 1em;
+					.light{
+						fill: $blue;
+					}
+					.dark{
+						fill: color.adjust($blue, $lightness: -10%);
+					}
+					&:hover{
+						.light{
+							fill: #0099FF;
+						}
+						.dark{
+							fill: color.adjust(#0099FF, $lightness: -10%);
+						}
+					}
+				}
+			}
+		}
+		@media(max-width:$lg){
+			.col{
+				width: 100%;
+				text-align: center !important;
+				padding: 10px;
+			}
+		}
+	}
+}

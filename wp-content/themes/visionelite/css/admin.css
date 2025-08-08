@@ -1,0 +1,238 @@
+/*
+    CUSTOM LAYOUT FORMATING
+*/
+.frame{
+    margin-top: 12px;
+}
+.frame table,
+.frame table tbody,
+.frame table tr{
+    border-collapse: collapse;
+    border-spacing: 12px;
+    width: 100%;
+}
+.frame table tr{
+    display: flex;
+}
+.frame table tr td{
+    flex: 1;
+}
+.frame table tr td:not(:last-child) input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]),
+.frame table tr td:not(:last-child) select{
+    width: calc(100% - 10px);
+}
+.frame figure.figure {
+    margin: 0 0 20px;
+}
+.frame figure.figure img{
+    position: relative;
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    background-color: #f0f0f0;
+    border: none;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+}
+.frame figure.figure a.remove_image{
+    display: block;
+    width: 120px;
+}
+@media (max-width: 600px) {
+    .frame table tr{
+        flex-direction: column;
+    }
+    .frame table tr td{
+        width: 100%;
+    }
+    .frame table tr td:not(:last-child) input[type="text"],
+    .frame table tr td:not(:last-child) select{
+        width: 100%;
+    }
+}
+
+
+/*
+    FAKE DISABLED CLASS IN SITE SETTINGS
+*/
+input[type="text"].disabled,
+select.disabled{
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+
+/*
+    ADMIN THEME MODS
+*
+html body #wpadminbar .quicklinks .menupop ul.ab-sub-secondary, 
+html body #wpadminbar .quicklinks .menupop ul.ab-sub-secondary .ab-submenu,
+html body #adminmenu, 
+html body #adminmenu .wp-submenu, 
+html body #adminmenuback, 
+html body #adminmenuwrap, 
+html body #wpadminbar, 
+html body #wpadminbar .menupop .ab-sub-wrapper, 
+html body #wpadminbar .shortlink-input, 
+html body #wpadminbar li.hover > .ab-item,
+html body #wpadminbar .ab-item:hover,
+html body #wpadminbar > #wp-toolbar li:hover > .ab-item{
+    background-color: #101010 !important;
+    color: #fff !important;
+}
+html body #adminmenu .wp-has-submenu:hover,
+html body #adminmenu .wp-not-current-submenu:hover,
+html body #adminmenu li.menu-top:hover,
+html body #adminmenu li.wp-has-submenu.wp-menu-open,
+html body #adminmenu li.opensub,
+html body #adminmenu li.wp-has-submenu.wp-menu-open > a,
+html body #adminmenu li.opensub > a{
+    background-color: #f0f0f0 !important;
+    color: #122960 !important;
+}
+html body #adminmenu .wp-has-current-submenu::after,
+html body #adminmenu .wp-menu-open::after,
+html body #wpadminbar .ab-item:hover,
+html body #wpadminbar > #wp-toolbar li:hover > .ab-item{
+    border-right-color: #f0f0f0 !important;
+}
+html body #adminmenu li.opensub::after{
+    border-right-color: #122960 !important;
+}
+html body #adminmenu .wp-has-current-submenu .wp-submenu .wp-submenu-head, 
+html body #adminmenu .wp-menu-arrow, 
+html body #adminmenu .wp-menu-arrow div, 
+html body #adminmenu li.current a.menu-top, 
+html body #adminmenu li.wp-has-current-submenu a.wp-has-current-submenu, 
+html body .folded #adminmenu li.current.menu-top, 
+html body .folded #adminmenu li.wp-has-current-submenu{
+    background: #264898 !important;
+    background-color: #264898 !important;
+    color: #fff !important;
+}
+html body .wrap .add-new-h2, 
+html body .wrap .add-new-h2:active, 
+html body .wrap .page-title-action, 
+html body .wrap .page-title-action:active,
+html body.wp-core-ui .button, 
+html body.wp-core-ui .button-secondary{
+    border: 1px solid #264898 !important;
+    background: transparent !important;
+    color: #264898 !important;
+}
+html body.wp-core-ui .button-primary{
+    background: #264898 !important;
+    color: #fff !important;
+}
+html body .wrap .page-title-action:hover,
+html body.wp-core-ui .button:hover, 
+html body.wp-core-ui .button-primary:hover,
+html body.wp-core-ui .button-secondary:hover{
+    background: #FFA736 !important;
+    border-color: #FFA736 !important;
+    color: #122960 !important;
+}
+html body .wrap .page-title-action:focus,
+html body.wp-core-ui .button:focus, 
+html body.wp-core-ui .button-primary:focus,
+html body.wp-core-ui .button-secondary:focus{
+    background: #ffb75a !important;
+    color: #fff !important;
+}
+html body #adminmenu .wp-submenu li.current, 
+html body #adminmenu .wp-submenu li.current a, 
+html body #adminmenu .wp-submenu li.current a:focus, 
+html body #adminmenu a.wp-has-current-submenu:focus+.wp-submenu li.current a,
+html body #adminmenu .wp-submenu a,
+html body #wpadminbar .quicklinks .menupop ul li a, 
+html body #wpadminbar .quicklinks .menupop ul li a strong, 
+html body #wpadminbar .quicklinks .menupop.hover ul li a, 
+html body #wpadminbar.nojs .quicklinks .menupop:hover ul li a{
+    color: #597dd0 !important;
+}
+html body #adminmenu .wp-submenu li.current a:hover,
+html body #adminmenu .wp-submenu a:hover{
+    color: #fff !important;
+}
+/**/
+html body .postbox label:not(#title-prompt-text){
+    display: block;
+    margin: 20px 5px 5px;
+    opacity: 0.5;
+    font-weight: 400 !important;
+}
+html body #adminmenu li.wp-menu-separator{
+    background-color: hsla(0,0%,0%,0.5) !important;
+    height: 1px !important;
+    margin-top: 6px !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+html body .postbox select,
+html body .postbox input[type="text"],
+html body .postbox input[type="email"],
+html body .postbox input[type="number"],
+html body .postbox input[type="password"],
+html body .postbox input[type="url"],
+html body .postbox input[type="tel"],
+html body .postbox input[type="search"],
+html body .postbox input[type="datetime-local"],
+html body .postbox input[type="date"],
+html body .postbox input[type="month"],
+html body .postbox input[type="time"],
+html body .postbox input[type="week"],
+html body .postbox input[type="color"],
+html body .postbox textarea{
+    width: 100%;
+    border: 1px solid #c3c4c7 !important;
+    border-radius: 0 !important;
+}
+html body input#title{
+    border: 1px solid #c3c4c7;
+    border-radius: 0;
+}
+html body #wpwrap,
+html body #wpadminbar #wp-toolbar{
+    max-width: 9999px;
+}
+html body #adminmenu *,
+html body #adminmenu li a,
+html body #adminmenu li.menu-top > a,
+html body #adminmenu li.wp-has-current-submenu > a,
+html body #adminmenu li.current > a,
+html body #adminmenu li.menu-top:hover > a{
+    border-left: none !important;
+    box-shadow: none !important;
+}
+html body .notice-dismiss,
+html body .notice-dismiss::before{
+    color: black;
+}
+html body #menu-posts-session ul.wp-submenu li:nth-last-child(1),
+html body #menu-posts-session ul.wp-submenu li:nth-last-child(2),
+html body #myblogs table,
+html body #screen-meta-links,
+html body #wpfooter,
+html body #your-profile table tr:not(.user-first-name-wrap):not(.user-last-name-wrap):not(.user-email-wrap):not(#password),
+html body #gender-add-toggle,
+html body.post-type-session #pageparentdiv,
+html body #menu-posts-project{
+    /*display: none !important;*/
+}
+
+
+/*
+    SPECIFIC ELEMENTS
+*/
+html body #postimagediv .inside img{
+	width: 100% !important;
+	aspect-ratio: 1/1 !important;
+	object-fit: cover !important;
+}
+html body.wp-core-ui .button.tagadd{
+    margin-top: 10px !important;
+}
+html body .categorychecklist li label{
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+}

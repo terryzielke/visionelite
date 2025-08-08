@@ -1,0 +1,59 @@
+form.forminator-custom-form{
+	label{
+		.forminator-required{
+			color: $orange !important;
+		}
+	}
+	.forminator-description{
+		display: none !important;
+	}
+	.forminator-row{
+		margin-bottom: 20px !important;
+	}
+	.forminator-row.forminator-row-last{
+		margin-bottom: 0 !important;
+	}
+	input,
+	textarea{
+		border: 1px solid $grey !important;
+		border-radius: 5px !important;
+		background-color: $white !important;
+	}
+	.forminator-button-submit{
+		display: inline-block;
+		-webkit-appearance: none;
+		background-color: $blue;
+		border-color: $blue;
+		border-width: 1px;
+		color: $white;
+		margin: 0 5px 5px 0;
+		padding: .5em 1em .3em !important;
+		border-radius: 1000px !important;
+		font-family: $text !important;
+		font-size: $font-size !important;
+		font-weight: 600 !important;
+		font-style: normal;
+		text-transform: uppercase !important;
+		transition: .2s all linear;
+		width: auto !important;
+		&:hover{
+			background-color: $orange !important;
+			border-color: $orange !important;
+			color: $white !important;
+			box-shadow: none !important;
+		}
+	}
+	.forminator-button-upload{
+		color: $white !important;
+		background-color: $grey !important;
+		border: 1px solid $grey !important;
+		border-radius: 5px !important;
+		box-shadow: none !important;
+	}
+	.forminator-button-delete{
+		background-color: transparent !important;
+	}
+}
+html body .forminator-edit-module{
+	display: none !important;
+}

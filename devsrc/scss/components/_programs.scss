@@ -1,0 +1,154 @@
+/*
+    Single Program
+*/
+#program-details-section{
+    .container{
+        .content{
+            h3{
+                color: $blue;
+            }
+        }
+    }
+}
+#program-list-section{
+    #program-list-header{
+        position: relative;
+        border-top: 1px solid $light;
+        border-bottom: 1px solid $light;
+        padding: 20px 0 15px;
+        margin: 20px 0 40px;
+        h3{
+            margin: 0;
+        }
+        #toggle-filters{
+            position: absolute;
+            top: 20px;
+            right: 0;
+            margin-top: .2em;
+            color: $blue;
+            font-family: $rajdhani;
+            font-size: $font-size;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            i{
+                margin-right: 10px;
+                font-size: .8em;
+            }
+            &:hover{
+                color: $orange;
+            }
+        }
+        #filters{
+            margin-top: 0;
+            padding-top: 15px;
+            padding-bottom: 5px;
+            .filter{
+                &.program{
+                    display: none !important;
+                }
+            }
+            label{
+                color: darken($light, 10%);
+            }
+        }
+    }
+}
+
+/*
+    Programs List
+*/
+ul#sessions{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    li.session{
+        display: block;
+        margin-top: 40px;
+        margin-bottom: 40px;
+        .session-header{
+            position: relative;
+            padding: 10px 20px 6px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            color: $white;
+            background-color: $blue;
+            .row{
+                .col{
+                    h3{
+                        position: relative;
+                        margin: 0 !important;
+                        padding-left: 40px;
+                        img{
+                            position: absolute;
+                            display: block;
+                            top: calc(50% - 15px);
+                            left: 0;
+                            width: 30px;
+                            height: 30px;
+                        }
+                    }
+                    .btn{
+                        position: absolute;
+                        top: 50%;
+                        right: 20px;
+                        transform: translateY(-50%);
+                        margin: 0 !important;
+                        span{
+                            display: block;
+                            font-size: calc($font-size * 0.7);
+                            text-transform: capitalize;
+                            margin-top: -5px;
+                        }
+                    }
+                }
+            }
+        }
+        .session-details{
+            background-color: $light;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            padding: 10px 20px 10px 60px;
+            h4{
+                color: $blue;
+            }
+        }
+    }
+    @media(max-width: $md){
+        li.session{
+            margin-top: 20px;
+            margin-bottom: 20px;
+            .session-header{
+                padding: 20px 0 6px 0;
+                background-image: none;
+                .row{
+                    .col{
+                        h3{
+                            padding: 0 20px;
+                        }
+                        .btn{
+                            position: relative;
+                            top: 10px;
+                            right: 0;
+                            transform: none;
+                            margin: 0 !important;
+                            width: 100%;
+                            border-radius: 0 !important;
+                            border: none !important;
+                            background-color: $darkblue !important;
+                            color: $white !important;
+                        }
+                    }
+                }
+            }
+            .session-details{
+                padding: 10px 20px;
+                p{
+                    font-size: calc($font-size * 0.8);
+                }
+            }
+        }
+    }
+}

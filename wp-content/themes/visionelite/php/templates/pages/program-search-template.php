@@ -38,7 +38,7 @@ get_header();
 
 					foreach ($sites as $site) {
 						switch_to_blog($site->blog_id);
-
+/*
 						$query = new WP_Query([
 							'post_type' => 'session',
 							'post_status' => 'publish',
@@ -46,6 +46,29 @@ get_header();
 							'order' => 'ASC',
 							'posts_per_page' => -1,
 						]);
+*/
+						// order Sessions by session_season in the order (spring, summer, fall, winter)
+						$query = new WP_Query([
+							'post_type' => 'session',
+							'post_status' => 'publish',
+							'posts_per_page' => -1,
+							'meta_key' => 'session_season',
+							'orderby' => 'meta_value',
+							'order' => 'ASC',
+							'meta_query' => [
+								'relation' => 'OR',
+								[
+									'key' => 'session_season',
+									'value' => ['Spring', 'Summer', 'Fall', 'Winter'],
+									'compare' => 'IN',
+								],
+								[
+									'key' => 'session_season',
+									'compare' => 'NOT EXISTS',
+								],
+							],
+						]);
+
 
 						while ($query->have_posts()) {
 							$query->the_post();
@@ -61,12 +84,26 @@ get_header();
 					}
 				} else {
 					// Just get sessions from current site
+					// order Sessions by session_season in the order (spring, summer, fall, winter)
 					$query = new WP_Query([
 						'post_type' => 'session',
 						'post_status' => 'publish',
-						'orderby' => 'title',
-						'order' => 'ASC',
 						'posts_per_page' => -1,
+						'meta_key' => 'session_season',
+						'orderby' => 'meta_value',
+						'order' => 'ASC',
+						'meta_query' => [
+							'relation' => 'OR',
+							[
+								'key' => 'session_season',
+								'value' => ['Spring', 'Summer', 'Fall', 'Winter'],
+								'compare' => 'IN',
+							],
+							[
+								'key' => 'session_season',
+								'compare' => 'NOT EXISTS',
+							],
+						],
 					]);
 
 					while ($query->have_posts()) {

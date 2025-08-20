@@ -219,6 +219,10 @@ html body.post-type-session #pageparentdiv,
 html body #menu-posts-project{
     /*display: none !important;*/
 }
+html body.non-super-admin-dashboard.index-php #wpbody-content,
+html body #screen-meta-links{
+	display: none !important;
+}
 
 
 /*

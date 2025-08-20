@@ -283,6 +283,18 @@ add_action('wp_before_admin_bar_render', function(){
 	$wp_admin_bar->remove_menu('comments');
 });
 
+
+// Add a body class in the admin area depending on super admin status
+add_filter( 'admin_body_class', function( $classes ) {
+    if ( is_super_admin() ) {
+        $classes .= ' super-admin-dashboard';
+    } else {
+        $classes .= ' non-super-admin-dashboard';
+    }
+    return $classes;
+} );
+
+
 // CHECK FOR BLOG PAGES
 function is_blog () {
     return ( is_archive() || is_author() || is_category() || is_home() || is_single() || is_tag()) && 'post' == get_post_type();

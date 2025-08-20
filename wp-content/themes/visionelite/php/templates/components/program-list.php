@@ -43,7 +43,15 @@ function get_program_list($sessions) {
         $session_start_date = get_post_meta($post_id, 'session_start_date', true);
         $session_end_date = get_post_meta($post_id, 'session_end_date', true);
         $session_start_time = get_post_meta($post_id, 'session_start_time', true);
+        // start time with AM PM
+        if ($session_start_time) {
+            $session_start_time = date("g:i A", strtotime($session_start_time));
+        }
         $session_end_time = get_post_meta($post_id, 'session_end_time', true);
+        // end time with AM PM
+        if ($session_end_time) {
+            $session_end_time = date("g:i A", strtotime($session_end_time));
+        }
         $session_days = get_post_meta($post_id, 'session_days', true);
         $days = is_array($session_days) ? implode(', ', $session_days) : '';
         $session_cancelations = get_post_meta($post_id, 'session_cancelations', true);
@@ -105,7 +113,7 @@ function get_program_list($sessions) {
                         <?php if($session_start_date): ?><p><strong>Start Date: </strong><?=$session_start_date?></p><?php endif; ?>
                         <?php if($session_end_date): ?><p><strong>End Date: </strong><?=$session_end_date?></p><?php endif; ?>
                         <?php if($session_days): ?><p><strong>Days: </strong><span><?=$days?></span></p><?php endif; ?>
-                        <?php if($session_start_time): ?><p><strong>Time: </strong><span><?=$session_start_time?></span></p><?php endif; ?>
+                        <?php if($session_start_time): ?><p><strong>Time: </strong><span><?=$session_start_time.($session_end_time ? ' - '.$session_end_time : '')?></span></p><?php endif; ?>
                         <?php if($session_cancelations): ?><p><strong>Cancelation Dates: </strong><span><?=$session_cancelations?></span></p><?php endif; ?>
                     </div>
                     <div class="col col-12 col-md-3">

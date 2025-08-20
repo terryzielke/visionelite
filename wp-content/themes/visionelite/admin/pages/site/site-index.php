@@ -57,7 +57,7 @@ function remove_admin_bar_elements() {
         $wp_admin_bar->remove_node('wpseo-menu'); // Yoast SEO menu
         if ( ! current_user_can( 'administrator' ) && is_multisite() ) {
             // remove My Sites menu for non-admin users in multisite
-            $wp_admin_bar->remove_menu( 'my-sites' ); // My Sites
+            //$wp_admin_bar->remove_menu( 'my-sites' ); // My Sites
         }
 }
 add_action( 'wp_before_admin_bar_render', 'remove_admin_bar_elements' );

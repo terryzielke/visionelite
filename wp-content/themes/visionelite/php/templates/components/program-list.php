@@ -32,6 +32,33 @@ function get_program_list($sessions) {
 
         $grade = get_the_terms($post_id, 'grade');
         $grade_list = $grade ? implode(',', array_map('strval', wp_list_pluck($grade, 'name'))) : '';
+        
+        // Get skill_level terms ordered by custom "order" meta
+		$skill_levels = get_the_terms($post_id, 'skill_level');
+		
+		if ($skill_levels && !is_wp_error($skill_levels)) {
+		    // Sort terms by "order" meta
+		    usort($skill_levels, function($a, $b) {
+		        $order_a = (int) get_term_meta($a->term_id, 'order', true);
+		        $order_b = (int) get_term_meta($b->term_id, 'order', true);
+		        return $order_a - $order_b;
+		    });
+		
+		    // Get first and last term names
+		    $first_skill = reset($skill_levels)->name;
+		    $last_skill  = end($skill_levels)->name;
+		
+		    // If only one skill level, first = last
+		    $skill_range = ($first_skill === $last_skill) 
+		        ? $first_skill 
+		        : "$first_skill - $last_skill";
+		} else {
+		    $skill_range = '';
+		}
+		
+		$season = get_the_terms($post_id, 'season');
+        // Get season name
+        $season_name = $season ? implode(', ', wp_list_pluck($season, 'name')) : '';
 
         $program_type = get_post_meta($post_id, 'session_program', true);
         $session_sport = get_post_meta($post_id, 'session_sport', true);
@@ -73,14 +100,16 @@ function get_program_list($sessions) {
         }
 
         ?>
-        <li class="session" data-program="<?=$program_title?>" data-sport="<?=strtolower(get_the_title($session_sport))?>" data-season="<?=$session_season?>" data-province="<?=$venue_province?>" data-city="<?=strtolower($venue_city)?>" data-ages="<?=$ages_list?>" data-grade="<?=($grade_list ? $grade_list : '0')?>" data-gender="<?=$gender_list?>">
+        <li class="session" data-program="<?=$program_title?>" data-sport="<?=strtolower(get_the_title($session_sport))?>" data-season="<?=($season_name ? strtolower($season_name) : $session_season)?>" data-province="<?=$venue_province?>" data-city="<?=strtolower($venue_city)?>" data-ages="<?=$ages_list?>" data-grade="<?=($grade_list ? $grade_list : '0')?>" data-gender="<?=$gender_list?>">
 
             <div class="session-header">
                 <div class="row">
                     <div class="col col-12 col-md-10">
                         <h3>
                             <img src="<?=$session_sport ? get_the_post_thumbnail_url($session_sport) : get_template_directory_uri().'/assets/img/UI/location-orange.svg'?>" alt="sport" class="sport">
-                            <?=$program_title?><br><?=$venue_title?>
+                            <?=$program_title?><?=($skill_range ? ': '.$skill_range : '')?>
+                            <span class="<?=$gender_list?>"></span>
+                            <br><?=$venue_title?>
                         </h3>
                     </div>
                     <div class="col col-12 col-md-2">
@@ -94,9 +123,11 @@ function get_program_list($sessions) {
                 <div class="row">
                     <div class="col col-12 col-md-2">
                         <div>
-                            <h4>Season</h4>
+                            <h4><?=($season_name == 'Special Event' ? $season_name : 'Season')?></h4>
                             <p>
-                                <strong><?=ucwords($session_season)?></strong><br>
+	                            <?php if($season_name != 'Special Event'): ?>
+                                <strong><?=($season_name ? $season_name : ucwords($session_season))?></strong><br>
+								<?php endif; ?>
                                 <strong><?=ucwords(get_the_title($session_sport))?></strong>
                             </p>
                         </div>
@@ -122,6 +153,7 @@ function get_program_list($sessions) {
                         <?php if($gender_list): ?><p><strong>Gender: </strong><?=$gender_list?></p><?php endif; ?>
                         <?php if($ages_list): ?><p><strong>Ages: </strong><?=$age_range?></p><?php endif; ?>
                         <?php if($grade_list): ?><p><strong>Grade: </strong><?=$grade_list?></p><?php endif; ?>
+                        <?php if($skill_levels): ?><p><strong>Skill Level: </strong><?=$skill_range?></p><?php endif; ?>
                     </div>
                     <div class="col col-12 col-md-1">
                     </div>

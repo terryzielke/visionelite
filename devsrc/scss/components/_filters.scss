@@ -13,9 +13,12 @@
     }
     .filter{
         flex: 1;
-        min-width: 160px;
+        min-width: 200px;
         padding-left: 10px;
         padding-right: 10px;
+        &:last-child{
+	        flex-grow: 10;
+        }
         label{
             display: block;
             color: $white;

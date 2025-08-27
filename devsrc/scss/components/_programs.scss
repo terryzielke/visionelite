@@ -89,6 +89,37 @@ ul#sessions{
                             width: 30px;
                             height: 30px;
                         }
+		                span.CO-ED,
+		                span.Boys,
+		                span.Girls{
+		                    position: relative;
+		                    top: 2px;
+		                    margin-left: .3em;
+		                    &::before,
+		                    &::after{
+		                        display: inline-block;
+		                        position: relative;
+		                        width: 20px;
+		                        height: .8em;
+		                        background-size: contain;
+		                        background-repeat: no-repeat;
+		                        background-position: center bottom;
+		                    }
+		                }
+		                span.CO-ED,
+		                span.Boys{
+		                    &::before{
+		                        content: '';
+		                        background-image: url(../assets/img/UI/boy-orange.svg);
+		                    }
+		                }
+		                span.CO-ED,
+		                span.Girls{
+		                    &::after{
+		                        content: '';
+		                        background-image: url(../assets/img/UI/girl-orange.svg);
+		                    }
+		                }
                     }
                     .btn{
                         position: absolute;
@@ -126,7 +157,11 @@ ul#sessions{
                 .row{
                     .col{
                         h3{
-                            padding: 0 20px;
+                            font-size: 20px;
+                            img{
+	                            top: 3px;
+	                            left: 7px;
+                            }
                         }
                         .btn{
                             position: relative;

@@ -106,7 +106,7 @@
 			</td>
 		</tr>
 	</table>
-
+	<div style="display: none;">
 	<label for="session_season">Season</label>
 	<select name="session_season" id="session_season" season="<?= $session_season ?>">
 		<option value="winter" <?=($session_season == 'winter' ? ' selected="selected"' : '')?> >Winter</option>
@@ -114,6 +114,7 @@
 		<option value="summer" <?=($session_season == 'summer' ? ' selected="selected"' : '')?> >Summer</option>
 		<option value="fall" <?=($session_season == 'fall' ? ' selected="selected"' : '')?> >Fall</option>
 	</select>
+	</div>
 
 	<input type="hidden" name="session_venue" id="session_venue" value="<?= $session_venue ?>">
 	<table>

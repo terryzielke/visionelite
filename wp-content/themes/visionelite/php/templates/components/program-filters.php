@@ -67,21 +67,26 @@ function get_program_filters($filters = ['province', 'city', 'program', 'sport',
     }
 
     if (in_array('season', $filters)) {
-        $url_season = str_replace('-', ' ', isset($_GET['season']) ? $_GET['season'] : '');
-        $seasons = ['Spring', 'Summer', 'Fall', 'Winter'];
-
-        if (!empty($seasons)) {
-            echo '<div class="filter season">
-                    <label>Season</label>
-                    <select id="filter-season" name="season">
-                        <option value="all">All</option>
-                        <option value="spring">Spring</option>
-                        <option value="summer">Summer</option>
-                        <option value="fall">Fall</option>
-                        <option value="winter">Winter</option>
-                    </select>
-                </div>';
-        }
+        // get all category terms from the category taxonomy 'season'. order by custom field 'term_order'
+        $seasons = get_terms([
+		    'taxonomy'   => 'season',
+		    'hide_empty' => false,
+		    'orderby'    => 'meta_value_num',
+		    'meta_key'   => 'order',
+		    'order'      => 'ASC',
+		]);
+		
+		//if (!is_wp_error($seasons) && !empty($seasons)) {
+		    echo '<div class="filter season">
+		            <label>Season</label>
+		            <select id="filter-season" name="season">
+		                <option value="all">All</option>';
+		                foreach ($seasons as $season) {
+		                    echo '<option value="' . esc_attr(strtolower($season->name)) . '">' . esc_html($season->name) . '</option>';
+		                }
+		    echo '  </select>
+		        </div>';
+		//}
     }
 
     if (in_array('province', $filters)) {

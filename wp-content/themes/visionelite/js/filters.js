@@ -18,26 +18,26 @@ jQuery(document).ready(function($){
     }
 
     function filterSessions() {
-        var programFilter = $('#filter-programs').val();
-        var sportFilter = $('#filter-sport').val();
-        var seasonFilter = $('#filter-season').val();
-        var provinceFilter = $('#filter-province').val();
-        var cityFilter = $('#filter-city').val();
-        var ageFilter = $('#filter-age').val();
-        var gradeFilter = $('#filter-grade').val();
-        var genderFilter = $('#filter-gender').val();
+		var programFilter  = $('#filter-programs').val()  || "all";
+		var sportFilter    = $('#filter-sport').val()     || "all";
+		var seasonFilter   = $('#filter-season').val()    || "all";
+		var provinceFilter = $('#filter-province').val()  || "all";
+		var cityFilter     = $('#filter-city').val()      || "all";
+		var ageFilter      = $('#filter-age').val()       || "all";
+		var gradeFilter    = $('#filter-grade').val()     || "all";
+		var genderFilter   = $('#filter-gender').val()    || "all";
 
-console.log('--- FILTER VALUES ---');
-console.log({
-  programFilter,
-  sportFilter,
-  seasonFilter,
-  provinceFilter,
-  cityFilter,
-  ageFilter,
-  gradeFilter,
-  genderFilter
-});
+		console.log('--- FILTER VALUES ---');
+		console.log({
+		  programFilter,
+		  sportFilter,
+		  seasonFilter,
+		  provinceFilter,
+		  cityFilter,
+		  ageFilter,
+		  gradeFilter,
+		  genderFilter
+		});
 
         $('#sessions li.session').each(function() {
             var $session = $(this);
@@ -101,7 +101,7 @@ console.log({
         filterSessions();
     });
     // Initial filter in case page loads with selected options
-    filterSessions();
+     filterSessions();
 
     // toggle showing the #filters div
     $('#toggle-filters').on('click', function() {

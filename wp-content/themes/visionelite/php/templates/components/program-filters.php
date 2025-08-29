@@ -1,7 +1,6 @@
 <?php
 
-function get_program_filters($filters = ['province', 'city', 'program', 'sport', 'season', 'age', 'grade', 'gender']) {
-
+function get_program_filters($filters = ['province', 'city', 'program', 'sport', 'season', 'age', 'grade', 'gender', 'skill_level']) {
 
     $user_province = get_user_province();
     if (empty($user_province)) {
@@ -117,11 +116,30 @@ function get_program_filters($filters = ['province', 'city', 'program', 'sport',
 
     if (in_array('city', $filters)) {
 
+        $taxonomy_cities = get_terms([
+            'taxonomy' => 'city',
+            'hide_empty' => false,
+        ]);
+        if (!empty($taxonomy_cities)) {
+            usort($taxonomy_cities, function ($a, $b) {
+                return strnatcmp($a->name, $b->name);
+            });
+            $taxonomy_cities = array_map(function ($term) {
+                return $term->name;
+            }, $taxonomy_cities);
+            $all_cities = array_unique($taxonomy_cities);
+            sort($all_cities);
+        }
+        // get all cities from function
+        $cities = get_all_cities();
+        // merge both arrays and remove duplicates
+        $cities = array_unique(array_merge($all_cities, $cities));
+        sort($cities);
+
         echo '<div class="filter city">
                 <label>City</label>
                 <select id="filter-city" name="city">
                     <option value="all">All</option>';
-                    $cities = get_all_cities();
                     foreach ($cities as $city) {
                         echo '<option value="' . strtolower($city) . '" '.(strtolower($user_city) == strtolower($city) ? ' selected="selected"' : '' ).'>' . ucwords($city) . '</option>';
                     }
@@ -129,8 +147,8 @@ function get_program_filters($filters = ['province', 'city', 'program', 'sport',
             </div>';
     }
 
-    if (in_array('age', $filters) || in_array('grade', $filters) || in_array('gender', $filters)) {
-        $demographic_taxonomy_filters = ['age', 'grade', 'gender'];
+    if (in_array('age', $filters) || in_array('grade', $filters) || in_array('gender', $filters) || in_array('skill_level', $filters)) {
+        $demographic_taxonomy_filters = ['age', 'grade', 'gender', 'skill_level'];
         foreach ($demographic_taxonomy_filters as $taxonomy) {
             if(!in_array($taxonomy, $filters)){
                 continue;
@@ -147,7 +165,7 @@ function get_program_filters($filters = ['province', 'city', 'program', 'sport',
                     return strnatcmp($a->name, $b->name);
                 });
                 echo '<div class="filter '.strtolower($taxonomy).'">
-                        <label>' . ucfirst($taxonomy) . '</label>
+                        <label>' . ucfirst( str_replace('_', ' ', $taxonomy)) . '</label>
                         <select id="filter-' . $taxonomy . '" name="' . $taxonomy . '">
                             <option value="all">All</option>';
                 foreach ($terms as $term) {

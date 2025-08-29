@@ -26,6 +26,7 @@ jQuery(document).ready(function($){
 		var ageFilter      = $('#filter-age').val()       || "all";
 		var gradeFilter    = $('#filter-grade').val()     || "all";
 		var genderFilter   = $('#filter-gender').val()    || "all";
+        var skillLevelFilter = $('#filter-skill_level').val() || "all";
 
 		console.log('--- FILTER VALUES ---');
 		console.log({
@@ -36,7 +37,8 @@ jQuery(document).ready(function($){
 		  cityFilter,
 		  ageFilter,
 		  gradeFilter,
-		  genderFilter
+		  genderFilter,
+          skillLevelFilter
 		});
 
         $('#sessions li.session').each(function() {
@@ -49,6 +51,7 @@ jQuery(document).ready(function($){
             var ages = normalizeToArray($session.data('ages'));
             var grade = normalizeToArray($session.data('grade'));
             var gender = $session.data('gender');
+            var skillLevel = $session.data('skill');
 
             var show = true;
 
@@ -76,13 +79,16 @@ jQuery(document).ready(function($){
             if (genderFilter !== 'all' && (gender !== genderFilter && gender !== 'CO-ED')) {
                 show = false;
             }
+            if (skillLevelFilter !== 'all' && !skillLevel.includes(skillLevelFilter)) {
+                show = false;
+            }
 
             if (show) {
                 $session.show();
             } else {
                 $session.hide();
             }
-
+/*
 console.log('--- SESSION DATA ---');
 console.log({
   program,
@@ -94,10 +100,11 @@ console.log({
   grade,
   gender
 });
+*/
         });
     }
     // Trigger filtering when any filter changes
-    $('#filter-programs, #filter-sport, #filter-season, #filter-province, #filter-city, #filter-age, #filter-gender, #filter-grade').on('change', function() {
+    $('#filter-programs, #filter-sport, #filter-season, #filter-province, #filter-city, #filter-age, #filter-gender, #filter-grade, #filter-skill_level').on('change', function() {
         filterSessions();
     });
     // Initial filter in case page loads with selected options
@@ -124,7 +131,8 @@ console.log({
         $('#filter-city').val() !== 'all' ||
         $('#filter-age').val() !== 'all' ||
         $('#filter-grade').val() !== 'all' ||
-        $('#filter-gender').val() !== 'all') {
+        $('#filter-gender').val() !== 'all' ||
+        $('#filter-skill_level').val() !== 'all') {
         $('#toggle-filters i').removeClass('fa-filter').addClass('fa-times');
         $('#filters').addClass('show');
     }
@@ -145,7 +153,8 @@ document.addEventListener("DOMContentLoaded", function () {
         "filter-city",
         "filter-age",
         "filter-grade",
-        "filter-gender"
+        "filter-gender",
+        "filter-skill_level"
     ];
 
     // Load saved cookies

@@ -18,7 +18,7 @@ get_header();
 		<div class="row filters-row">
 			<div class="col col-12">
 				<?php
-					get_program_filters(['city', 'sport', 'season']);
+					get_program_filters(['city', 'sport', 'season', 'skill_level']);
 				?>
 			</div>
 		</div>

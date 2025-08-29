@@ -35,7 +35,7 @@ function get_program_list($sessions) {
         
         // Get skill_level terms ordered by custom "order" meta
 		$skill_levels = get_the_terms($post_id, 'skill_level');
-		
+		$skill_csv = $skill_levels ? implode(',', wp_list_pluck($skill_levels, 'name')) : '';
 		if ($skill_levels && !is_wp_error($skill_levels)) {
 		    // Sort terms by "order" meta
 		    usort($skill_levels, function($a, $b) {
@@ -59,6 +59,14 @@ function get_program_list($sessions) {
 		$season = get_the_terms($post_id, 'season');
         // Get season name
         $season_name = $season ? implode(', ', wp_list_pluck($season, 'name')) : '';
+
+        // get Province taxonomy terms
+        $province = get_the_terms($post_id, 'province');
+        $province_list = $province ? implode(', ', wp_list_pluck($province, 'name')) : '';
+
+        // get City taxonomy terms
+        $city = get_the_terms($post_id, 'city');
+        $city_list = $city ? implode(', ', wp_list_pluck($city, 'name')) : '';
 
         $program_type = get_post_meta($post_id, 'session_program', true);
         $session_sport = get_post_meta($post_id, 'session_sport', true);
@@ -100,7 +108,7 @@ function get_program_list($sessions) {
         }
 
         ?>
-        <li class="session" data-program="<?=$program_title?>" data-sport="<?=strtolower(get_the_title($session_sport))?>" data-season="<?=($season_name ? strtolower($season_name) : $session_season)?>" data-province="<?=$venue_province?>" data-city="<?=strtolower($venue_city)?>" data-ages="<?=$ages_list?>" data-grade="<?=($grade_list ? $grade_list : '0')?>" data-gender="<?=$gender_list?>">
+        <li class="session" data-program="<?=$program_title?>" data-sport="<?=strtolower(get_the_title($session_sport))?>" data-season="<?=($season_name ? strtolower($season_name) : $session_season)?>" data-province="<?=$venue_province?>" data-city="<?=strtolower($venue_city)?>" data-ages="<?=$ages_list?>" data-grade="<?=($grade_list ? $grade_list : '0')?>" data-gender="<?=$gender_list?>" data-skill="<?=($skill_csv ? $skill_csv : '')?>">
 
             <div class="session-header">
                 <div class="row">

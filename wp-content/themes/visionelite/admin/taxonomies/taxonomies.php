@@ -67,11 +67,37 @@ function register_visionelite_taxonomies() {
 		'show_in_rest' => true,
         'rest_base' => 'season',
     ));
+
+    // Province Taxonomy
+    register_taxonomy('province', 'session', array(
+        'label' => __('Province'),
+        'rewrite' => array('slug' => 'province'),
+        'hierarchical' => true,
+        'show_admin_column' => true,
+        'show_ui' => true,
+        'query_var' => true,
+        'show_in_rest' => true,
+        'rest_base' => 'province',
+    ));
+
+    // City Taxonomy
+    register_taxonomy('city', 'session', array(
+        'label' => __('City'),
+        'rewrite' => array('slug' => 'city'),
+        'hierarchical' => true,
+        'show_admin_column' => true,
+        'show_ui' => true,
+        'query_var' => true,
+        'show_in_rest' => true,
+        'rest_base' => 'city',
+    ));
 }
 add_action('init', 'register_visionelite_taxonomies');
 
 
-// Add custom field to skill_level taxonomy
+/* 
+ * Add custom field to skill_level taxonomy
+ */
 function skill_level_add_order_field( $term ) {
     $order = get_term_meta( $term->term_id, 'order', true );
     ?>
@@ -84,7 +110,6 @@ function skill_level_add_order_field( $term ) {
     <?php
 }
 add_action( 'skill_level_edit_form_fields', 'skill_level_add_order_field' );
-
 // Save custom field
 function skill_level_save_order_field( $term_id ) {
     if ( isset( $_POST['term_order'] ) ) {
@@ -93,7 +118,9 @@ function skill_level_save_order_field( $term_id ) {
 }
 add_action( 'edited_skill_level', 'skill_level_save_order_field' );
 
-// add order field to season taxonomy
+/**
+ * Add order field to season taxonomy
+ */
 function season_add_order_field( $term ) {
     $order = get_term_meta( $term->term_id, 'order', true );
     ?>
@@ -115,7 +142,7 @@ function season_save_order_field( $term_id ) {
 add_action( 'edited_season', 'season_save_order_field' );
 
 /**
- * Convert "season" taxonomy checkboxes to radio buttons in the post editor
+ * Convert Season, Province, and City taxonomy checkboxes to radio buttons in the post editor
  */
 add_action('admin_footer', function () {
     global $pagenow;
@@ -126,19 +153,41 @@ add_action('admin_footer', function () {
     ?>
     <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const container = document.querySelector("#taxonomy-season");
-        if (!container) return;
+        const seasonContainer = document.querySelector("#taxonomy-season");
+        if (seasonContainer) {
+            const seasonCheckboxes = seasonContainer.querySelectorAll('input[type="checkbox"]');
+            seasonCheckboxes.forEach(input => {
+                input.type = "radio";
+                // Ensure the name ends with [] so WP core still treats it as an array
+                if (!input.name.endsWith("[]")) {
+                    input.name = input.name + "[]";
+                }
+            });
+        }
 
-        const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+        const provinceContainer = document.querySelector("#taxonomy-province");
+        if (provinceContainer) {
+            const provinceCheckboxes = provinceContainer.querySelectorAll('input[type="checkbox"]');
+            provinceCheckboxes.forEach(input => {
+                input.type = "radio";
+                // Ensure the name ends with [] so WP core still treats it as an array
+                if (!input.name.endsWith("[]")) {
+                    input.name = input.name + "[]";
+                }
+            });
+        }
 
-        checkboxes.forEach(input => {
-            input.type = "radio";
-
-            // Ensure the name ends with [] so WP core still treats it as an array
-            if (!input.name.endsWith("[]")) {
-                input.name = input.name + "[]";
-            }
-        });
+        const cityContainer = document.querySelector("#taxonomy-city");
+        if (cityContainer) {
+            const cityCheckboxes = cityContainer.querySelectorAll('input[type="checkbox"]');
+            cityCheckboxes.forEach(input => {
+                input.type = "radio";
+                // Ensure the name ends with [] so WP core still treats it as an array
+                if (!input.name.endsWith("[]")) {
+                    input.name = input.name + "[]";
+                }
+            });
+        }
     });
     </script>
     <?php

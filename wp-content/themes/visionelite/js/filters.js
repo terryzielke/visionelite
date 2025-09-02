@@ -1,5 +1,15 @@
 jQuery(document).ready(function($){
 
+    // Toggle Seasons
+    $(document).on('click','#season-section .season-tab', function() {
+        const season = $(this).data('season').toLowerCase().replace(' ', '-');
+        $('#programs-section .container').removeClass('active');
+        $('#programs-section #' + season + '-container').addClass('active');
+        $('#season-section .season-tab').removeClass('active');
+        $(this).addClass('active');
+        $('#filters-section h1 span#season-name').text(season.replace('-', ' '));
+    });
+
     // Normalize to array
     function normalizeToArray(value) {
         if (Array.isArray(value)) {

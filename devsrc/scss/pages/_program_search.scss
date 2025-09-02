@@ -1,7 +1,6 @@
 #filters-section{
     display: flex;
     justify-content: space-between;
-    margin-bottom: 20px;
     background-color: $blue;
     padding: 40px 0;
     .container{
@@ -47,6 +46,65 @@
                     margin-right: 0;
                 }
             }
+        }
+    }
+}
+
+#season-section{
+    margin-bottom: 20px;
+    .container{
+        .row{
+            .col{
+                display: flex;
+                gap: 20px;
+                .season-tab{
+                    flex: 1;
+                    padding: 10px 15px;
+                    border-bottom-left-radius: 10px;
+                    border-bottom-right-radius: 10px;
+                    background: $blue;
+                    color: $white;
+                    text-transform: uppercase;
+                    text-align: center;
+                    cursor: pointer;
+                    &:hover{
+                        background-color: $orange;
+                        color: $white;
+                    }
+                    &.active{
+                        background: $white;
+                        color: $blue;
+                        font-weight: 600;
+                    }
+                }
+            }
+        }
+    }
+    @media(max-width: $md){
+        .container{
+            padding: 0 !important;
+            .row{
+                .col{
+                    //flex-direction: column;
+                    gap: 0;
+                    .season-tab{
+  display: grid;
+  align-items: center;
+                        padding: 5px;
+                        border-radius: 0 !important;
+                        font-size: calc($font-size * .8) !important;
+                        line-height: calc($font-size * .8) !important;
+                    }
+                }
+            }
+        }
+    }
+}
+
+#programs-section{
+    .container{
+        &:not(.active){
+            display: none;
         }
     }
 }

@@ -19,8 +19,8 @@ function get_program_list($sessions) {
 
         $gender = get_the_terms($post_id, 'gender');
         $gender_list = $gender ? implode(', ', wp_list_pluck($gender, 'name')) : '';
-        if (str_contains(strtolower($gender_list), 'boys') && str_contains(strtolower($gender_list), 'girls')) {
-            $gender_list = 'CO-ED';
+        if ((str_contains(strtolower($gender_list), 'boys') && str_contains(strtolower($gender_list), 'girls')) || (str_contains(strtolower($gender_list), 'co-ed'))) {
+            $gender_list = 'Boys & Girls';
         }
 
         $age = get_the_terms($post_id, 'age');
@@ -31,8 +31,18 @@ function get_program_list($sessions) {
         $age_range = "$lowest_age - $highest_age";
 
         $grade = get_the_terms($post_id, 'grade');
-        $grade_list = $grade ? implode(',', array_map('strval', wp_list_pluck($grade, 'name'))) : '';
-        
+        // get comma separated grades
+        $grades = $grade ? implode(',', array_map('strval', wp_list_pluck($grade, 'name'))) : '';
+        // comma separated grades in order from smallest to largest. ensuring that 10 will come after 9
+        $grade_list = array_map('intval', explode(',', $grades));
+        sort($grade_list);
+        $grade_list = implode(',', $grade_list);
+        // order grades
+        $grade_values = array_map(fn($g) => (int) $g->name, $grade ?: []);
+        $lowest_grade = $grade_values ? min($grade_values) : 0;
+        $highest_grade = $grade_values ? max($grade_values) : 12;
+        $grade_range = "$lowest_grade - $highest_grade";
+
         // Get skill_level terms ordered by custom "order" meta
 		$skill_levels = get_the_terms($post_id, 'skill_level');
 		$skill_csv = $skill_levels ? implode(',', wp_list_pluck($skill_levels, 'name')) : '';
@@ -113,12 +123,15 @@ function get_program_list($sessions) {
             <div class="session-header">
                 <div class="row">
                     <div class="col col-12 col-md-10">
-                        <h3>
+                        <h4>
                             <img src="<?=$session_sport ? get_the_post_thumbnail_url($session_sport) : get_template_directory_uri().'/assets/img/UI/location-orange.svg'?>" alt="sport" class="sport">
-                            <?=$program_title?><?=($skill_range ? ': '.$skill_range : '')?>
-                            <span class="<?=$gender_list?>"></span>
-                            <br><?=$venue_title?>
-                        </h3>
+                            <?=($grades ? (strpos(strtolower($grades), 'grade') !== false ? $grades : 'Grade '.$grades) : ($ages_list ? 'Ages '.$age_range : ''))?>
+                            <?=($gender_list ? ' '.$gender_list.':' : '')?>
+                            <?=($skill_range ? ' '.$skill_range : '')?>
+                            <br>
+                            <?=($session_days ? ' '.$days : '')?>
+                            <?=($venue_title ? ' at '.$venue_title : '')?>
+                        </h4>
                     </div>
                     <div class="col col-12 col-md-2">
                         <?php if($session_registration): ?>
@@ -129,17 +142,6 @@ function get_program_list($sessions) {
             </div>
             <div class="session-details">
                 <div class="row">
-                    <div class="col col-12 col-md-2">
-                        <div>
-                            <h4><?=($season_name == 'Special Event' ? $season_name : 'Season')?></h4>
-                            <p>
-	                            <?php if($season_name != 'Special Event'): ?>
-                                <strong><?=($season_name ? $season_name : ucwords($session_season))?></strong><br>
-								<?php endif; ?>
-                                <strong><?=ucwords(get_the_title($session_sport))?></strong>
-                            </p>
-                        </div>
-                    </div>
                     <div class="col col-12 col-md-3">
                         <h4>Address</h4>
                         <p><strong><?=$venue_title?>:</strong></p>
@@ -151,17 +153,17 @@ function get_program_list($sessions) {
                         <h4>Schedule</h4>
                         <?php if($session_start_date): ?><p><strong>Start Date: </strong><?=$session_start_date?></p><?php endif; ?>
                         <?php if($session_end_date): ?><p><strong>End Date: </strong><?=$session_end_date?></p><?php endif; ?>
-                        <?php if($session_days): ?><p><strong>Days: </strong><span><?=$days?></span></p><?php endif; ?>
+                        <?php /* if($session_days): ?><p><strong>Days: </strong><span><?=$days?></span></p><?php endif; */ ?>
                         <?php if($session_start_time): ?><p><strong>Time: </strong><span><?=$session_start_time.($session_end_time ? ' - '.$session_end_time : '')?></span></p><?php endif; ?>
                         <?php if($session_cancelations): ?><p><strong>Cancelation Dates: </strong><span><?=$session_cancelations?></span></p><?php endif; ?>
                     </div>
                     <div class="col col-12 col-md-3">
-                        <h4>Details</h4>
-                        <?php if($session_price): ?><p><strong>Price: </strong><?=$session_price?></p><?php endif; ?>
-                        <?php if($gender_list): ?><p><strong>Gender: </strong><?=$gender_list?></p><?php endif; ?>
-                        <?php if($ages_list): ?><p><strong>Ages: </strong><?=$age_range?></p><?php endif; ?>
-                        <?php if($grade_list): ?><p><strong>Grade: </strong><?=$grade_list?></p><?php endif; ?>
-                        <?php if($skill_levels): ?><p><strong>Skill Level: </strong><?=$skill_range?></p><?php endif; ?>
+                        <?php
+                        // if $session_price includes "$"
+                        if($session_price): ?><h4>Price: <?=($session_price ? (strpos($session_price, '$') !== false ? $session_price : '$'.$session_price) : '')?></h4><?php endif; ?>
+                        <?php if($session_registration): ?>
+                            <strong><a href="<?=$session_registration?>" target="_blank">Register Now <?=($session_remaining_spots ? '<span>('.$session_remaining_spots.' spots left)</span>' : '')?></a></strong>
+                        <?php endif; ?>
                     </div>
                     <div class="col col-12 col-md-1">
                     </div>

@@ -4,6 +4,7 @@ Template Name: Program Search
 */
 get_header();
 
+// Seed season title from cookie (matches JS cookie name), default to All
 $season_cookie = isset($_COOKIE['filter-season']) ? strtolower($_COOKIE['filter-season']) : 'all';
 $season_map = [
     'fall'   => 'Fall',
@@ -28,7 +29,7 @@ $current_season = isset($season_map[$season_cookie]) ? $season_map[$season_cooki
 		<div class="row filters-row">
 			<div class="col col-12">
 				<?php
-					get_program_filters(['sport', 'city', 'program', 'season']);
+					get_program_filters(['sport', 'program', 'season', 'city']);
 				?>
 			</div>
 		</div>

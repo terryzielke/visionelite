@@ -1,5 +1,40 @@
 <?php
 
+if (!function_exists('vea_format_session_days')) {
+    function vea_format_session_days($session_days) {
+        if (empty($session_days)) {
+            return '';
+        }
+        $days = is_array($session_days) ? $session_days : explode(',', (string)$session_days);
+        $days = array_map(function($d){ return ucfirst(strtolower(trim($d))); }, $days);
+        $seen = [];
+        $normalized = [];
+        foreach ($days as $d) {
+            if (!isset($seen[$d]) && $d !== '') {
+                $seen[$d] = true;
+                $normalized[] = $d;
+            }
+        }
+        if (empty($normalized)) {
+            return '';
+        }
+
+        $order = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+        $present = array_fill_keys($normalized, true);
+
+        $hasMonToFri = true;
+        foreach (['Monday','Tuesday','Wednesday','Thursday','Friday'] as $wd) {
+            if (!isset($present[$wd])) { $hasMonToFri = false; break; }
+        }
+
+        if ($hasMonToFri) {
+            return 'Monday to Friday';
+        }
+
+        return implode(', ', $normalized);
+    }
+}
+
 function get_program_list($sessions) {
     // ob_start();
     
@@ -98,7 +133,7 @@ function get_program_list($sessions) {
             $session_end_time = date("g:i A", strtotime($session_end_time));
         }
         $session_days = get_post_meta($post_id, 'session_days', true);
-        $days = is_array($session_days) ? implode(', ', $session_days) : '';
+        $days_display = vea_format_session_days($session_days);
         $session_cancelations = get_post_meta($post_id, 'session_cancelations', true);
         $session_notes = get_post_meta($post_id, 'session_notes', true);
 
@@ -130,7 +165,7 @@ function get_program_list($sessions) {
                             <?=($gender_list ? ' '.$gender_list.':' : '')?>
                             <?=($skill_range ? ' '.$skill_range : '')?>
                             <br>
-                            <?=($session_days ? ' '.$days : '')?>
+                            <?=($days_display ? ' '.$days_display : '')?>
                             <?=($venue_title ? ' at '.$venue_title : '')?>
                         </h4>
                     </div>
@@ -154,7 +189,7 @@ function get_program_list($sessions) {
                         <h4>Schedule</h4>
                         <?php if($session_start_date): ?><p><strong>Start Date: </strong><?=$session_start_date?></p><?php endif; ?>
                         <?php if($session_end_date): ?><p><strong>End Date: </strong><?=$session_end_date?></p><?php endif; ?>
-                        <?php /* if($session_days): ?><p><strong>Days: </strong><span><?=$days?></span></p><?php endif; */ ?>
+                        <?php /* if($session_days): ?><p><strong>Days: </strong><span><?=vea_format_session_days($session_days)?></span></p><?php endif; */ ?>
                         <?php if($session_start_time): ?><p><strong>Time: </strong><span><?=$session_start_time.($session_end_time ? ' - '.$session_end_time : '')?></span></p><?php endif; ?>
                         <?php if($session_cancelations): ?><p><strong>Cancelation Dates: </strong><span><?=$session_cancelations?></span></p><?php endif; ?>
                     </div>

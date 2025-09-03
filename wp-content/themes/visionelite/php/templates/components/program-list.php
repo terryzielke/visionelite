@@ -3,7 +3,7 @@
 function get_program_list($sessions) {
     // ob_start();
     
-    echo '<ul id="sessions">';
+    $items = [];
 
     foreach ($sessions as $session_data) {
         $post = $session_data['post'];
@@ -117,6 +117,7 @@ function get_program_list($sessions) {
             restore_current_blog(); // back from main site
         }
 
+        ob_start();
         ?>
         <li class="session" data-program="<?=$program_title?>" data-sport="<?=strtolower(get_the_title($session_sport))?>" data-season="<?=($season_name ? strtolower($season_name) : $session_season)?>" data-province="<?=$venue_province?>" data-city="<?=strtolower($venue_city)?>" data-ages="<?=$ages_list?>" data-grade="<?=($grade_list ? $grade_list : '0')?>" data-gender="<?=$gender_list?>" data-skill="<?=($skill_csv ? $skill_csv : '')?>">
 
@@ -171,12 +172,39 @@ function get_program_list($sessions) {
             </div>
         </li>
         <?php
+        $li_html = ob_get_clean();
 
         wp_reset_postdata();
 
         if (is_multisite()) {
             restore_current_blog(); // back from the session's blog
         }
+
+        $venue_key = strtolower($venue_title ?: '');
+        $group_key = $grade_values ? $lowest_grade : ($age_values ? $lowest_age : 999);
+        $start_key = $session_start_date ? strtotime($session_start_date) : PHP_INT_MAX;
+
+        $items[] = [
+            'venue' => $venue_key,
+            'group' => (int)$group_key,
+            'start' => (int)$start_key,
+            'html'  => $li_html,
+        ];
+    }
+
+    usort($items, function($a, $b) {
+        if ($a['venue'] !== $b['venue']) {
+            return $a['venue'] <=> $b['venue'];
+        }
+        if ($a['group'] !== $b['group']) {
+            return $a['group'] <=> $b['group'];
+        }
+        return $a['start'] <=> $b['start'];
+    });
+
+    echo '<ul id="sessions">';
+    foreach ($items as $item) {
+        echo $item['html'];
     }
     wp_reset_query();
     echo '</ul>';

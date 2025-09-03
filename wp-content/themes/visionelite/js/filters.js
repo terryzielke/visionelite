@@ -1,15 +1,5 @@
 jQuery(document).ready(function($){
 
-    // Toggle Seasons
-    $(document).on('click','#season-section .season-tab', function() {
-        const season = $(this).data('season').toLowerCase().replace(' ', '-');
-        $('#programs-section .container').removeClass('active');
-        $('#programs-section #' + season + '-container').addClass('active');
-        $('#season-section .season-tab').removeClass('active');
-        $(this).addClass('active');
-        $('#filters-section h1 span#season-name').text(season.replace('-', ' '));
-    });
-
     // Normalize to array
     function normalizeToArray(value) {
         if (Array.isArray(value)) {
@@ -27,29 +17,22 @@ jQuery(document).ready(function($){
         return [String(value).trim()]; // catch-all
     }
 
-    function filterSessions() {
-		var programFilter  = $('#filter-programs').val()  || "all";
-		var sportFilter    = $('#filter-sport').val()     || "all";
-		var seasonFilter   = $('#filter-season').val()    || "all";
-		var provinceFilter = $('#filter-province').val()  || "all";
-		var cityFilter     = $('#filter-city').val()      || "all";
-		var ageFilter      = $('#filter-age').val()       || "all";
-		var gradeFilter    = $('#filter-grade').val()     || "all";
-		var genderFilter   = $('#filter-gender').val()    || "all";
-        var skillLevelFilter = $('#filter-skill_level').val() || "all";
+    function updateSeasonTitleFromDropdown() {
+        var seasonFilter = $('#filter-season').val() || 'all';
+        var pretty = seasonFilter === 'all' ? 'All' : seasonFilter.replace('-', ' ');
+        $('#filters-section h1 span#season-name').text(pretty.charAt(0).toUpperCase() + pretty.slice(1));
+    }
 
-		console.log('--- FILTER VALUES ---');
-		console.log({
-		  programFilter,
-		  sportFilter,
-		  seasonFilter,
-		  provinceFilter,
-		  cityFilter,
-		  ageFilter,
-		  gradeFilter,
-		  genderFilter,
-          skillLevelFilter
-		});
+    function filterSessions() {
+        var programFilter  = $('#filter-programs').val()  || "all";
+        var sportFilter    = $('#filter-sport').val()     || "all";
+        var seasonFilter   = $('#filter-season').val()    || "all";
+        var provinceFilter = $('#filter-province').val()  || "all";
+        var cityFilter     = $('#filter-city').val()      || "all";
+        var ageFilter      = $('#filter-age').val()       || "all";
+        var gradeFilter    = $('#filter-grade').val()     || "all";
+        var genderFilter   = $('#filter-gender').val()    || "all";
+        var skillLevelFilter = $('#filter-skill_level').val() || "all";
 
         $('#sessions li.session').each(function() {
             var $session = $(this);
@@ -98,27 +81,15 @@ jQuery(document).ready(function($){
             } else {
                 $session.hide();
             }
-/*
-console.log('--- SESSION DATA ---');
-console.log({
-  program,
-  sport,
-  season,
-  province,
-  city,
-  ages,
-  grade,
-  gender
-});
-*/
         });
     }
-    // Trigger filtering when any filter changes
     $('#filter-programs, #filter-sport, #filter-season, #filter-province, #filter-city, #filter-age, #filter-gender, #filter-grade, #filter-skill_level').on('change', function() {
+        updateSeasonTitleFromDropdown();
         filterSessions();
     });
-    // Initial filter in case page loads with selected options
-     filterSessions();
+
+    updateSeasonTitleFromDropdown();
+    filterSessions();
 
     // toggle showing the #filters div
     $('#toggle-filters').on('click', function() {
@@ -173,6 +144,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const cookieValue = getCookie(id);
         if (select && cookieValue) {
             select.value = cookieValue;
+            const evt = new Event('change', { bubbles: true });
+            select.dispatchEvent(evt);
         }
 
         // Save selection to cookie on change

@@ -15,30 +15,21 @@ function get_program_filters($filters = ['province', 'city', 'program', 'sport',
 
     if (in_array('program', $filters)) {
         $url_programs = str_replace('-', ' ', isset($_GET['programs']) ? $_GET['programs'] : '');
-        if (is_multisite()) {
-            switch_to_blog(1);
-        }
-        $programs = get_posts([
-            'post_type' => 'program',
-            'status' => 'publish',
-            'posts_per_page' => -1,
-        ]);
-        if (is_multisite()) {
-            restore_current_blog();
-        }
-
-        if (!empty($programs)) {
-            echo '<div class="filter program">
+        $program_options = [
+            'Vision Elite Academy',
+            'Vision Premier League',
+            'Special Events',
+        ];
+        echo '<div class="filter program">
                     <label>Program</label>
                     <select id="filter-programs" name="programs">
                         <option value="all">All</option>';
-                        foreach ($programs as $program) {
-                            $selected = (strtolower($url_programs) == strtolower($program->post_title)) ? 'selected' : '';
-                            echo '<option value="' . $program->post_title . '" ' . $selected . '>' . $program->post_title . '</option>';
+                        foreach ($program_options as $program_title) {
+                            $selected = (strtolower($url_programs) == strtolower($program_title)) ? 'selected' : '';
+                            echo '<option value="' . esc_attr($program_title) . '" ' . $selected . '>' . esc_html($program_title) . '</option>';
                         }
             echo '</select>
                 </div>';
-        }
     }
 
     if (in_array('sport', $filters)) {
@@ -66,26 +57,16 @@ function get_program_filters($filters = ['province', 'city', 'program', 'sport',
     }
 
     if (in_array('season', $filters)) {
-        // get all category terms from the category taxonomy 'season'. order by custom field 'term_order'
-        $seasons = get_terms([
-		    'taxonomy'   => 'season',
-		    'hide_empty' => false,
-		    'orderby'    => 'meta_value_num',
-		    'meta_key'   => 'order',
-		    'order'      => 'ASC',
-		]);
-		
-		//if (!is_wp_error($seasons) && !empty($seasons)) {
-		    echo '<div class="filter season">
-		            <label>Season</label>
-		            <select id="filter-season" name="season">
-		                <option value="all">All</option>';
-		                foreach ($seasons as $season) {
-		                    echo '<option value="' . esc_attr(strtolower($season->name)) . '">' . esc_html($season->name) . '</option>';
-		                }
-		    echo '  </select>
-		        </div>';
-		//}
+        $season_options = ['Fall', 'Winter', 'Spring', 'Summer'];
+        echo '<div class="filter season">
+                    <label>Season</label>
+                    <select id="filter-season" name="season">
+                        <option value="all">All</option>';
+                        foreach ($season_options as $season_label) {
+                            echo '<option value="' . esc_attr(strtolower($season_label)) . '">' . esc_html($season_label) . '</option>';
+                        }
+            echo '  </select>
+                </div>';
     }
 
     if (in_array('province', $filters)) {
@@ -173,7 +154,7 @@ function get_program_filters($filters = ['province', 'city', 'program', 'sport',
                     echo '<option value="' . $term->name . '" ' . $selected . '>' . $term->name . '</option>';
                 }
                 echo '</select>
-                    </div>';
+                    </div>'; 
             }
         }
     }

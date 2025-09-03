@@ -1,9 +1,44 @@
 <?php
 
+if (!function_exists('vea_format_session_days')) {
+    function vea_format_session_days($session_days) {
+        if (empty($session_days)) {
+            return '';
+        }
+        $days = is_array($session_days) ? $session_days : explode(',', (string)$session_days);
+        $days = array_map(function($d){ return ucfirst(strtolower(trim($d))); }, $days);
+        $seen = [];
+        $normalized = [];
+        foreach ($days as $d) {
+            if (!isset($seen[$d]) && $d !== '') {
+                $seen[$d] = true;
+                $normalized[] = $d;
+            }
+        }
+        if (empty($normalized)) {
+            return '';
+        }
+
+        $order = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+        $present = array_fill_keys($normalized, true);
+
+        $hasMonToFri = true;
+        foreach (['Monday','Tuesday','Wednesday','Thursday','Friday'] as $wd) {
+            if (!isset($present[$wd])) { $hasMonToFri = false; break; }
+        }
+
+        if ($hasMonToFri) {
+            return 'Monday to Friday';
+        }
+
+        return implode(', ', $normalized);
+    }
+}
+
 function get_program_list($sessions) {
     // ob_start();
     
-    echo '<ul id="sessions">';
+    $items = [];
 
     foreach ($sessions as $session_data) {
         $post = $session_data['post'];
@@ -98,7 +133,7 @@ function get_program_list($sessions) {
             $session_end_time = date("g:i A", strtotime($session_end_time));
         }
         $session_days = get_post_meta($post_id, 'session_days', true);
-        $days = is_array($session_days) ? implode(', ', $session_days) : '';
+        $days_display = vea_format_session_days($session_days);
         $session_cancelations = get_post_meta($post_id, 'session_cancelations', true);
         $session_notes = get_post_meta($post_id, 'session_notes', true);
 
@@ -117,6 +152,7 @@ function get_program_list($sessions) {
             restore_current_blog(); // back from main site
         }
 
+        ob_start();
         ?>
         <li class="session" data-program="<?=$program_title?>" data-sport="<?=strtolower(get_the_title($session_sport))?>" data-season="<?=($season_name ? strtolower($season_name) : $session_season)?>" data-province="<?=$venue_province?>" data-city="<?=strtolower($venue_city)?>" data-ages="<?=$ages_list?>" data-grade="<?=($grade_list ? $grade_list : '0')?>" data-gender="<?=$gender_list?>" data-skill="<?=($skill_csv ? $skill_csv : '')?>">
 
@@ -129,7 +165,7 @@ function get_program_list($sessions) {
                             <?=($gender_list ? ' '.$gender_list.':' : '')?>
                             <?=($skill_range ? ' '.$skill_range : '')?>
                             <br>
-                            <?=($session_days ? ' '.$days : '')?>
+                            <?=($days_display ? ' '.$days_display : '')?>
                             <?=($venue_title ? ' at '.$venue_title : '')?>
                         </h4>
                     </div>
@@ -153,7 +189,7 @@ function get_program_list($sessions) {
                         <h4>Schedule</h4>
                         <?php if($session_start_date): ?><p><strong>Start Date: </strong><?=$session_start_date?></p><?php endif; ?>
                         <?php if($session_end_date): ?><p><strong>End Date: </strong><?=$session_end_date?></p><?php endif; ?>
-                        <?php /* if($session_days): ?><p><strong>Days: </strong><span><?=$days?></span></p><?php endif; */ ?>
+                        <?php /* if($session_days): ?><p><strong>Days: </strong><span><?=vea_format_session_days($session_days)?></span></p><?php endif; */ ?>
                         <?php if($session_start_time): ?><p><strong>Time: </strong><span><?=$session_start_time.($session_end_time ? ' - '.$session_end_time : '')?></span></p><?php endif; ?>
                         <?php if($session_cancelations): ?><p><strong>Cancelation Dates: </strong><span><?=$session_cancelations?></span></p><?php endif; ?>
                     </div>
@@ -171,12 +207,39 @@ function get_program_list($sessions) {
             </div>
         </li>
         <?php
+        $li_html = ob_get_clean();
 
         wp_reset_postdata();
 
         if (is_multisite()) {
             restore_current_blog(); // back from the session's blog
         }
+
+        $venue_key = strtolower($venue_title ?: '');
+        $group_key = $grade_values ? $lowest_grade : ($age_values ? $lowest_age : 999);
+        $start_key = $session_start_date ? strtotime($session_start_date) : PHP_INT_MAX;
+
+        $items[] = [
+            'venue' => $venue_key,
+            'group' => (int)$group_key,
+            'start' => (int)$start_key,
+            'html'  => $li_html,
+        ];
+    }
+
+    usort($items, function($a, $b) {
+        if ($a['venue'] !== $b['venue']) {
+            return $a['venue'] <=> $b['venue'];
+        }
+        if ($a['group'] !== $b['group']) {
+            return $a['group'] <=> $b['group'];
+        }
+        return $a['start'] <=> $b['start'];
+    });
+
+    echo '<ul id="sessions">';
+    foreach ($items as $item) {
+        echo $item['html'];
     }
     wp_reset_query();
     echo '</ul>';

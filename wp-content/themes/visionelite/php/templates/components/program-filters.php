@@ -13,34 +13,9 @@ function get_program_filters($filters = ['province', 'city', 'program', 'sport',
 
     echo '<div id="filters">';
 
-    if (in_array('program', $filters)) {
-        $url_programs = str_replace('-', ' ', isset($_GET['programs']) ? $_GET['programs'] : '');
-        if (is_multisite()) {
-            switch_to_blog(1);
-        }
-        $programs = get_posts([
-            'post_type' => 'program',
-            'status' => 'publish',
-            'posts_per_page' => -1,
-        ]);
-        if (is_multisite()) {
-            restore_current_blog();
-        }
+    $blocks = [];
 
-        if (!empty($programs)) {
-            echo '<div class="filter program">
-                    <label>Program</label>
-                    <select id="filter-programs" name="programs">
-                        <option value="all">All</option>';
-                        foreach ($programs as $program) {
-                            $selected = (strtolower($url_programs) == strtolower($program->post_title)) ? 'selected' : '';
-                            echo '<option value="' . $program->post_title . '" ' . $selected . '>' . $program->post_title . '</option>';
-                        }
-            echo '</select>
-                </div>';
-        }
-    }
-
+    // SPORT
     if (in_array('sport', $filters)) {
         $url_sport = str_replace('-', ' ', isset($_GET['sport']) ? $_GET['sport'] : '');
         $sports = get_posts([
@@ -50,8 +25,8 @@ function get_program_filters($filters = ['province', 'city', 'program', 'sport',
             'order' => 'ASC',
             'posts_per_page' => -1,
         ]);
-
         if (!empty($sports)) {
+            ob_start();
             echo '<div class="filter sport">
                     <label>Sport</label>
                     <select id="filter-sport" name="sport">
@@ -62,34 +37,88 @@ function get_program_filters($filters = ['province', 'city', 'program', 'sport',
                         }
             echo '</select>
                 </div>';
+            $blocks['sport'] = ob_get_clean();
         }
     }
 
-    if (in_array('season', $filters)) {
-        // get all category terms from the category taxonomy 'season'. order by custom field 'term_order'
-        $seasons = get_terms([
-		    'taxonomy'   => 'season',
-		    'hide_empty' => false,
-		    'orderby'    => 'meta_value_num',
-		    'meta_key'   => 'order',
-		    'order'      => 'ASC',
-		]);
-		
-		//if (!is_wp_error($seasons) && !empty($seasons)) {
-		    echo '<div class="filter season">
-		            <label>Season</label>
-		            <select id="filter-season" name="season">
-		                <option value="all">All</option>';
-		                foreach ($seasons as $season) {
-		                    echo '<option value="' . esc_attr(strtolower($season->name)) . '">' . esc_html($season->name) . '</option>';
-		                }
-		    echo '  </select>
-		        </div>';
-		//}
+    // PROGRAM
+    if (in_array('program', $filters)) {
+        // Use fixed program list per requirements
+        $url_programs = str_replace('-', ' ', isset($_GET['programs']) ? $_GET['programs'] : '');
+        $program_options = [
+            'Vision Elite Academy',
+            'Vision Premier League',
+            'Special Events',
+        ];
+        ob_start();
+        echo '<div class="filter program">
+                    <label>Program</label>
+                    <select id="filter-programs" name="programs">
+                        <option value="all">All</option>';
+                        foreach ($program_options as $program_title) {
+                            $selected = (strtolower($url_programs) == strtolower($program_title)) ? 'selected' : '';
+                            echo '<option value="' . esc_attr($program_title) . '" ' . $selected . '>' . esc_html($program_title) . '</option>';
+                        }
+            echo '</select>
+                </div>';
+        $blocks['program'] = ob_get_clean();
     }
 
-    if (in_array('province', $filters)) {
+    // SEASON
+    if (in_array('season', $filters)) {
+        // Fixed order: Fall, Winter, Spring, Summer
+        $season_options = ['Fall', 'Winter', 'Spring', 'Summer'];
+        ob_start();
+        echo '<div class="filter season">
+                    <label>Season</label>
+                    <select id="filter-season" name="season">
+                        <option value="all">All</option>';
+                        foreach ($season_options as $season_label) {
+                            echo '<option value="' . esc_attr(strtolower($season_label)) . '">' . esc_html($season_label) . '</option>';
+                        }
+            echo '  </select>
+                </div>';
+        $blocks['season'] = ob_get_clean();
+    }
 
+    // CITY
+    if (in_array('city', $filters)) {
+        $taxonomy_cities = get_terms([
+            'taxonomy' => 'city',
+            'hide_empty' => false,
+        ]);
+        if (!empty($taxonomy_cities)) {
+            usort($taxonomy_cities, function ($a, $b) {
+                return strnatcmp($a->name, $b->name);
+            });
+            $taxonomy_cities = array_map(function ($term) {
+                return $term->name;
+            }, $taxonomy_cities);
+            $all_cities = array_unique($taxonomy_cities);
+            sort($all_cities);
+        }
+        // get all cities from function
+        $cities = get_all_cities();
+        // merge both arrays and remove duplicates
+        $cities = array_unique(array_merge($all_cities, $cities));
+        sort($cities);
+
+        ob_start();
+        echo '<div class="filter city">
+                <label>City</label>
+                <select id="filter-city" name="city">
+                    <option value="all">All</option>';
+                    foreach ($cities as $city) {
+                        echo '<option value="' . strtolower($city) . '" '.(strtolower($user_city) == strtolower($city) ? ' selected="selected"' : '' ).'>' . ucwords($city) . '</option>';
+                    }
+        echo '</select>
+            </div>';
+        $blocks['city'] = ob_get_clean();
+    }
+
+    // PROVINCE
+    if (in_array('province', $filters)) {
+        ob_start();
         echo '<div class="filter province">
                 <label>Province</label>
                 <select id="filter-province" name="province">
@@ -112,69 +141,43 @@ function get_program_filters($filters = ['province', 'city', 'program', 'sport',
                     }
         echo '</select>
             </div>';
+        $blocks['province'] = ob_get_clean();
     }
 
-    if (in_array('city', $filters)) {
-
-        $taxonomy_cities = get_terms([
-            'taxonomy' => 'city',
+    // DEMOGRAPHICS (age, grade, gender, skill_level) – preserve individual keys
+    $demographic_taxonomy_filters = ['age', 'grade', 'gender', 'skill_level'];
+    foreach ($demographic_taxonomy_filters as $taxonomy) {
+        if(!in_array($taxonomy, $filters)){
+            continue;
+        }
+        $url_term = isset($_GET[$taxonomy]) ? $_GET[$taxonomy] : '';
+        $terms = get_terms([
+            'taxonomy' => $taxonomy,
             'hide_empty' => false,
         ]);
-        if (!empty($taxonomy_cities)) {
-            usort($taxonomy_cities, function ($a, $b) {
+        if (!empty($terms)) {
+            usort($terms, function ($a, $b) {
                 return strnatcmp($a->name, $b->name);
             });
-            $taxonomy_cities = array_map(function ($term) {
-                return $term->name;
-            }, $taxonomy_cities);
-            $all_cities = array_unique($taxonomy_cities);
-            sort($all_cities);
+            ob_start();
+            echo '<div class="filter '.strtolower($taxonomy).'">
+                    <label>' . ucfirst( str_replace('_', ' ', $taxonomy)) . '</label>
+                    <select id="filter-' . $taxonomy . '" name="' . $taxonomy . '">
+                        <option value="all">All</option>';
+            foreach ($terms as $term) {
+                $selected = (strtolower($url_term) == strtolower($term->name)) ? 'selected' : '';
+                echo '<option value="' . $term->name . '" ' . $selected . '>' . $term->name . '</option>';
+            }
+            echo '</select>
+                </div>'; 
+            $blocks[$taxonomy] = ob_get_clean();
         }
-        // get all cities from function
-        $cities = get_all_cities();
-        // merge both arrays and remove duplicates
-        $cities = array_unique(array_merge($all_cities, $cities));
-        sort($cities);
-
-        echo '<div class="filter city">
-                <label>City</label>
-                <select id="filter-city" name="city">
-                    <option value="all">All</option>';
-                    foreach ($cities as $city) {
-                        echo '<option value="' . strtolower($city) . '" '.(strtolower($user_city) == strtolower($city) ? ' selected="selected"' : '' ).'>' . ucwords($city) . '</option>';
-                    }
-        echo '</select>
-            </div>';
     }
 
-    if (in_array('age', $filters) || in_array('grade', $filters) || in_array('gender', $filters) || in_array('skill_level', $filters)) {
-        $demographic_taxonomy_filters = ['age', 'grade', 'gender', 'skill_level'];
-        foreach ($demographic_taxonomy_filters as $taxonomy) {
-            if(!in_array($taxonomy, $filters)){
-                continue;
-            }
-
-            $url_term = isset($_GET[$taxonomy]) ? $_GET[$taxonomy] : '';
-            $terms = get_terms([
-                'taxonomy' => $taxonomy,
-                'hide_empty' => false,
-            ]);
-
-            if (!empty($terms)) {
-                usort($terms, function ($a, $b) {
-                    return strnatcmp($a->name, $b->name);
-                });
-                echo '<div class="filter '.strtolower($taxonomy).'">
-                        <label>' . ucfirst( str_replace('_', ' ', $taxonomy)) . '</label>
-                        <select id="filter-' . $taxonomy . '" name="' . $taxonomy . '">
-                            <option value="all">All</option>';
-                foreach ($terms as $term) {
-                    $selected = (strtolower($url_term) == strtolower($term->name)) ? 'selected' : '';
-                    echo '<option value="' . $term->name . '" ' . $selected . '>' . $term->name . '</option>';
-                }
-                echo '</select>
-                    </div>';
-            }
+    // Output in the order provided by $filters
+    foreach ($filters as $key) {
+        if (isset($blocks[$key])) {
+            echo $blocks[$key];
         }
     }
 
